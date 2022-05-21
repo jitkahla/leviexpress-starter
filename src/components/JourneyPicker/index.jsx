@@ -7,7 +7,7 @@ const CityOptions = ({ cities }) => {
     <>
       <option value="">Vyberte</option>
       {cities.map((city) => (
-        <option key={city.code} value={city.name}>
+        <option key={city.code} value={city.code}>
           {city.name}
         </option>
       ))}
@@ -20,7 +20,7 @@ const DatesOptions = ({ dates }) => {
     <>
       <option value="">Vyberte</option>
       {dates.map((date) => (
-        <option key={date.basic} value={date.basic}>
+        <option key={date.dateBasic} value={date.dateBasic}>
           {date.dateCs}
         </option>
       ))}
@@ -31,7 +31,11 @@ const DatesOptions = ({ dates }) => {
 export const JourneyPicker = ({ onJourneyChange }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(fromCity, toCity, date);
+    fetch(
+      `https://apps.kodim.cz/daweb/leviexpress/api/journey?fromCity=${fromCity}&toCity=${toCity}&date=${date}`,
+    )
+      .then((response) => response.json())
+      .then((data) => onJourneyChange(data.results));
   };
 
   const [fromCity, setFromCity] = useState('');
@@ -79,7 +83,14 @@ export const JourneyPicker = ({ onJourneyChange }) => {
             </select>
           </label>
           <div className="journey-picker__controls">
-            <button onClick={handleSubmit} className="btn" type="submit">
+            <button
+              disabled={
+                fromCity !== '' && toCity !== '' && date !== '' ? false : true
+              }
+              onClick={handleSubmit}
+              className="btn"
+              type="submit"
+            >
               Vyhledat spoj
             </button>
           </div>

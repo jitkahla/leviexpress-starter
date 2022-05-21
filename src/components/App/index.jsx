@@ -11,6 +11,14 @@ export const App = () => (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/reservation" element={<Reservation />} />
+      <Route
+        path="*"
+        element={
+          <main style={{ padding: '1rem' }}>
+            <p>There's nothing here!</p>
+          </main>
+        }
+      />
     </Routes>
     <Outlet />
     <Footer />
